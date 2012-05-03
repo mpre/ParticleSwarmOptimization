@@ -10,3 +10,6 @@
 *.lai
 *.la
 *.a
+
+# Exectutable files
+*.out
