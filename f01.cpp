@@ -49,13 +49,16 @@ int main(int argc, char** argv) {
       for(int direction=0; direction<SPACE_DIM; ++direction) {
 	// Compute new position with damping if needed
 	particles[pos].position[direction] = particles[pos].position[direction] + particles[pos].vel[direction];
-	if(particles[pos].position[direction] < 100 || particles[pos].position[direction] > 100)
-	  particles[pos].vel[direction] = -(float)(rand() % 1) * particles[pos].vel[direction];
-	
+	if(particles[pos].position[direction] < 100 || particles[pos].position[direction] > 100) {
+	  float damping_rand = (float)rand() / (float)RAND_MAX;
+	  particles[pos].vel[direction] = -damping_rand * particles[pos].vel[direction];
+	}
 	// Compute new velocity
+	float r1 = (float)rand() / (float)RAND_MAX;
+	float r2 = (float)rand() / (float)RAND_MAX;
 	particles[pos].vel[direction] = INERTIA*particles[pos].vel[direction] + 
-	  (rand() % 1) * C_SOC * (global_best[direction] - particles[pos].position[direction]) +
-	  (rand() % 1) * C_SOC * (particles[pos].personal_best[direction] - particles[pos].position[direction]);
+	  r1 * C_SOC * (global_best[direction] - particles[pos].position[direction]) +
+	  r2 * C_SOC * (particles[pos].personal_best[direction] - particles[pos].position[direction]);
 
 	// Limit velocity
 	if(particles[pos].vel[direction] > MAX_VEL)
@@ -87,7 +90,8 @@ int main(int argc, char** argv) {
 
 void particles_init(struct particle &p) {
   for(int j=0; j<SPACE_DIM; ++j) {
-    p.position[j] = (float)(rand() % 201 - 101); // from -100 to +100, as defined
+    float random_pso = ( ( (float)rand() / (float)RAND_MAX ) * 201) - 101;
+    p.position[j] = random_pso; // from -100 to +100, as defined
     p.vel[j] =0.0f;
     p.personal_best[j] = p.position[j];
   }
