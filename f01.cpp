@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
 
 void particles_init(struct particle &p) {
   for(int j=0; j<SPACE_DIM; ++j) {
-    float random_pso = ( ( (float)rand() / (float)RAND_MAX ) * 201) - 101;
+    float random_pso = ( ( (float)rand() / (float)RAND_MAX ) * 200) - 100;
     p.position[j] = random_pso; // from -100 to +100, as defined
     p.vel[j] =0.0f;
     p.personal_best[j] = p.position[j];
